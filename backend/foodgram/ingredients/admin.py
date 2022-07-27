@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import Ingredient
 
 
+@admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = (
         'name',
@@ -10,6 +11,3 @@ class IngredientAdmin(admin.ModelAdmin):
     )
     list_filter = ('name',)
     empty_value_display = '--empty--'
-
-
-admin.site.register(Ingredient, IngredientAdmin)

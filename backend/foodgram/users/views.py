@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
@@ -6,22 +5,28 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from api.serializers import SubscriptionSerializer, CustomUserSerializer
-from .models import Subscription
+from api.pagination import LimitPageNumberPagination
+from api.serializers import (
+    FoodgramUserCreateSerializer, SubscriptionSerializer, CustomUserSerializer)
 
-User = get_user_model()
+from .models import Subscription, User
 
 
 class CustomUserViewSet(UserViewSet):
+    pagination_class = LimitPageNumberPagination
+
     def get_serializer_class(self):
         if self.action == 'subscribe':
             return SubscriptionSerializer
+        elif self.action == 'create':
+            return FoodgramUserCreateSerializer
         return CustomUserSerializer
 
-    @action(detail=True, permission_classes=[IsAuthenticated])
-    def subscribe(self, request, pk=None):
+    @action(detail=True, methods=['post'],
+            permission_classes=[IsAuthenticated])
+    def subscribe(self, request, id=None):
         user = request.user
-        author = get_object_or_404(User, id=pk)
+        author = get_object_or_404(User, id=id)
         if user == author:
             return Response({
                 'errors': 'You cannot subscribe on yourself'
@@ -38,9 +43,9 @@ class CustomUserViewSet(UserViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @subscribe.mapping.delete
-    def unsubscribe(self, request, pk=None):
+    def unsubscribe(self, request, id=None):
         user = request.user
-        author = get_object_or_404(User, id=pk)
+        author = get_object_or_404(User, id=id)
         if user == author:
             return Response({
                 'errors': 'You cannot unsubscribe yourself'
@@ -54,7 +59,8 @@ class CustomUserViewSet(UserViewSet):
             'errors': 'You have already unsubscribed!'
         }, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=['get'],
+            permission_classes=[IsAuthenticated])
     def subscriptions(self, request):
         user = request.user
         queryset = Subscription.objects.filter(user=user)

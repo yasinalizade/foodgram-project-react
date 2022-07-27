@@ -133,6 +133,7 @@ dmypy.json
 
 # .DS_store
 .DS_Store
+.vscode/
 
 # static and media
 

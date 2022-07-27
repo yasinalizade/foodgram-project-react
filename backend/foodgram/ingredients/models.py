@@ -7,7 +7,7 @@ class Ingredient(models.Model):
     Model describes ingredients for recipes.
     Relation ManyToMany.
     """
-    
+
     name = models.CharField(
         _('Name'),
         max_length=200,

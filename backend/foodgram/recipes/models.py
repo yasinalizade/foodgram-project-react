@@ -1,10 +1,8 @@
-from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from ingredients.models import Ingredient
-
-User = get_user_model()
+from users.models import User
 
 
 class Tag(models.Model):
@@ -31,7 +29,7 @@ class Tag(models.Model):
     )
 
     class Meta:
-        ordering = ['-id']
+        ordering = ('-id',)
         verbose_name = _('Tag')
         verbose_name_plural = _('Tags')
 
@@ -61,7 +59,12 @@ class Recipe(models.Model):
         verbose_name=_('User')
         )
     image = models.ImageField(upload_to='media/', null=False, blank=False)
-    name = models.CharField(_('Name'), max_length=200, db_index=True, blank=False)
+    name = models.CharField(
+        _('Name'),
+        max_length=200,
+        db_index=True,
+        blank=False
+        )
     text = models.TextField(_('Description'))
     shopping_cart = models.ManyToManyField(
         User,
@@ -146,11 +149,11 @@ class Shopping(models.Model):
     )
 
     class Meta:
-        ordering = ['-id']
+        ordering = ('-id',)
         verbose_name = _('Cart')
         verbose_name_plural = _('Carts')
         constraints = [
-            models.UniqueConstraint(fields=['user', 'recipe'],
+            models.UniqueConstraint(fields=('user', 'recipe'),
                                     name='unique cart user')
         ]
 
@@ -174,11 +177,11 @@ class Favorite(models.Model):
     )
 
     class Meta:
-        ordering = ['-id']
+        ordering = ('-id',)
         verbose_name = _('Favorite')
         verbose_name_plural = _('Favorites')
         constraints = [
-            models.UniqueConstraint(fields=['user', 'recipe'],
+            models.UniqueConstraint(fields=('user', 'recipe'),
                                     name='favorite recipe for unique user')
         ]
 

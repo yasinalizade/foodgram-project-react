@@ -13,7 +13,7 @@ elif [ $1 = 'pre-run' ]
         python manage.py collectstatic --noinput
 elif [ $1 = 'run' ]
     then
-        exec $(which gunicorn) api_yamdb.wsgi:application --bind=0:8000
+        exec $(which gunicorn) foodgram.wsgi:application --bind=0:8000
         exit $?
 else
     echo "Invalid argument"

@@ -8,32 +8,35 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from recipes.models import Recipe, Favorite, Shopping, IngredientRecipe
-from .serializers import RecipeSerializer, ShortRecipeSerializer
+from recipes.models import Favorite, IngredientRecipe, Recipe, Shopping
+
 from .filters import AuthorTagFilter
+from .pagination import LimitPageNumberPagination
 from .permissions import IsAuthorOrReadOnly
+from .serializers import RecipeSerializer, ShortRecipeSerializer
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    filter_class = (AuthorTagFilter,)
-    permission_classes = [IsAuthorOrReadOnly]
+    pagination_class = LimitPageNumberPagination
+    filterset_class = AuthorTagFilter
+    permission_classes = (IsAuthorOrReadOnly,)
 
-    @action(detail=True, methods=['get', 'delete'],
+    @action(detail=True, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated])
     def favorite(self, request, pk=None):
-        if request.method == 'GET':
+        if self.request.method == 'POST':
             return self.add_obj(Favorite, request.user, pk)
-        elif request.method == 'DELETE':
+        elif self.request.method == 'DELETE':
             return self.delete_obj(Favorite, request.user, pk)
 
-    @action(detail=True, methods=['get', 'delete'],
+    @action(detail=True, methods=['post', 'delete'],
             permission_classes=[IsAuthenticated])
     def shopping_cart(self, request, pk=None):
-        if request.method == 'GET':
+        if self.request.method == 'POST':
             return self.add_obj(Shopping, request.user, pk)
-        elif request.method == 'DELETE':
+        elif self.request.method == 'DELETE':
             return self.delete_obj(Shopping, request.user, pk)
 
     @action(detail=False, methods=['get'],

@@ -7,7 +7,7 @@ coreapi==2.3.3
 coreschema==0.0.4
 cryptography==37.0.4
 defusedxml==0.7.1
-Django==4.0.6
+Django==3.2
 django-cors-headers==3.13.0
 django-filter==22.1
 django-templated-mail==1.1.1
@@ -40,3 +40,5 @@ social-auth-core==4.3.0
 sqlparse==0.4.2
 uritemplate==4.1.1
 urllib3==1.26.10
+gunicorn==20.1.0
+psycopg2-binary==2.8.6
