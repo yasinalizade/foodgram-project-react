@@ -1,8 +1,7 @@
-from rest_framework import viewsets
-
 from api.filters import IngredientSearchFilter
 from api.permissions import IsAdminOrReadOnly
 from api.serializers import IngredientSerializer
+from rest_framework import viewsets
 
 from .models import Ingredient
 

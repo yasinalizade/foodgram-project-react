@@ -1,5 +1,4 @@
 from django.core.management import BaseCommand
-
 from ingredients.models import Ingredient
 from recipes.models import IngredientRecipe
 

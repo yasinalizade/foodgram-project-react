@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 from ingredients.models import Ingredient
 from users.models import User
 

@@ -1,13 +1,10 @@
 from django.contrib.auth.models import AnonymousUser
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from drf_extra_fields.fields import Base64ImageField
-from rest_framework import serializers
-from rest_framework.validators import (UniqueValidator,
-                                       UniqueTogetherValidator,
-                                       ValidationError)
-
 from ingredients.models import Ingredient
-from recipes.models import (Favorite, IngredientRecipe, Recipe, Shopping, Tag)
+from recipes.models import Favorite, IngredientRecipe, Recipe, Shopping, Tag
+from rest_framework import serializers
+from rest_framework.validators import UniqueValidator, ValidationError
 from users.models import Subscription, User
 
 

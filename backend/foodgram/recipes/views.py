@@ -1,7 +1,6 @@
-from rest_framework import viewsets
-
 from api.permissions import IsAdminOrReadOnly
 from api.serializers import TagSerializer
+from rest_framework import viewsets
 
 from .models import Tag
 
