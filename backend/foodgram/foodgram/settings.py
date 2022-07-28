@@ -1,6 +1,6 @@
 import os
-from django.utils.encoding import force_str
 
+from django.utils.encoding import force_str
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

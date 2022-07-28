@@ -6,15 +6,15 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 schema_view = get_schema_view(
-   openapi.Info(
-       title="Foodgram API",
-       description="Foodgram API documentation",
-       default_version='v1',
-       contact=openapi.Contact(email="admin@foodgram.ru"),
-       license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Foodgram API",
+        description="Foodgram API documentation",
+        default_version='v1',
+        contact=openapi.Contact(email="admin@foodgram.ru"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [

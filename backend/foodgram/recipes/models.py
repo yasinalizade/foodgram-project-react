@@ -44,26 +44,25 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name=_('Ingredients'),
         through='IngredientRecipe'
-        )
+    )
     tags = models.ManyToManyField(
         Tag,
         related_name='recipes',
         verbose_name=_('Tags'),
         through='TagRecipe'
-        )
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='recipes',
         verbose_name=_('User')
-        )
+    )
     image = models.ImageField(upload_to='media/', null=False, blank=False)
     name = models.CharField(
         _('Name'),
         max_length=200,
         db_index=True,
-        blank=False
-        )
+        blank=False)
     text = models.TextField(_('Description'))
     shopping_cart = models.ManyToManyField(
         User,
@@ -81,7 +80,7 @@ class Recipe(models.Model):
         _('Cooking time'),
         help_text='in minutes',
         blank=False
-        )
+    )
     pub_date = models.DateTimeField(_('Publication date'), auto_now_add=True)
 
     class Meta:
