@@ -42,14 +42,14 @@ class Recipe(models.Model):
 
     ingredients = models.ManyToManyField(
         Ingredient,
-        related_name='recipes_ingredients',
-        verbose_name='Ingredients',
+        related_name='recipes',
+        verbose_name=_('Ingredients'),
         through='IngredientRecipe'
         )
     tags = models.ManyToManyField(
         Tag,
         related_name='recipes',
-        verbose_name='Tags',
+        verbose_name=_('Tags'),
         through='TagRecipe'
         )
     author = models.ForeignKey(
@@ -111,20 +111,16 @@ class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
-        related_name='recipe',
-        blank=False
+        related_name='recipe_ingredient_list',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='ingredient',
-        blank=False
+        related_name='ingredient_recipe_list',
     )
     amount = models.PositiveSmallIntegerField(
         _('Amount'),
         default=1,
-        null=False,
-        blank=False,
     )
 
 

@@ -11,8 +11,26 @@ from recipes.models import (Favorite, IngredientRecipe, Recipe, Shopping, Tag)
 from users.models import Subscription, User
 
 
+class FoodgramUserCreateSerializer(UserCreateSerializer):
+    email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=User.objects.all())])
+
+    class Meta:
+        model = User
+        fields = ('id', 'email', 'password',
+                  'username', 'first_name', 'last_name')
+        extra_kwargs = {
+            'first_name': {'required': True},
+            'email': {'required': True},
+            'password': {'required': True},
+            'last_name': {'required': True},
+            'username': {'required': True},
+        }
+
+
 class CustomUserSerializer(UserSerializer):
     is_subscribed = serializers.SerializerMethodField()
+    username = serializers.SlugField()
 
     class Meta:
         model = User
@@ -27,18 +45,12 @@ class CustomUserSerializer(UserSerializer):
 
 
 class IngredientRecipeSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
-    measurement_unit = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField(read_only=True)
+    measurement_unit = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = IngredientRecipe
         fields = ('id', 'name', 'amount', 'measurement_unit')
-        validators = [
-            UniqueTogetherValidator(
-                queryset=IngredientRecipe.objects.all(),
-                fields=['ingredient', 'recipe']
-            )
-        ]
 
     def get_name(self, obj):
         return obj.name
@@ -50,7 +62,7 @@ class IngredientRecipeSerializer(serializers.ModelSerializer):
 class IngredientsField(serializers.Field):
     def to_representation(self, value):
         serializer = IngredientRecipeSerializer(value,
-                                                many=True, read_only=True)
+                                                many=True)
         return serializer.data
 
     def to_internal_value(self, data):
@@ -78,6 +90,18 @@ class RecipeSerializer(serializers.ModelSerializer):
                   'tags', 'ingredients', 'cooking_time',
                   'image', 'is_in_shopping_cart', 'is_favorited')
 
+    def validate_tags(self, value):
+        if len(value) == 0:
+            raise ValidationError('Ingredient list cannot be empty!')
+        for elem in value:
+            pk = elem.get('id', None)
+            if pk is None:
+                raise ValidationError('Check tag id')
+            tags = Tag.objects.filter(pk=pk)
+            if tags.count() == 0:
+                raise ValidationError(f'Tag with {pk} does not exist!')
+        return value
+
     def validate_ingredients(self, value):
         if len(value) == 0:
             raise ValidationError('Ingredient list cannot be empty!')
@@ -90,8 +114,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                 raise ValidationError(f'Ingredient with {pk} does not exist!')
         return value
 
-    @staticmethod
-    def add_ingredients(recipe, ingredients):
+    def add_ingredients(self, recipe, ingredients):
         links = []
         for ingredient in ingredients:
             obj = Ingredient.objects.get(pk=ingredient.get('id'))
@@ -189,22 +212,3 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     def get_recipes_count(self, obj):
         return Recipe.objects.filter(author=obj.author).count()
-
-
-class FoodgramUserCreateSerializer(UserCreateSerializer):
-    email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=User.objects.all())])
-    username = serializers.CharField(
-        validators=[UniqueValidator(queryset=User.objects.all())])
-
-    class Meta:
-        model = User
-        fields = ('id', 'email', 'password',
-                  'username', 'first_name', 'last_name')
-        extra_kwargs = {
-            'email': {'required': True},
-            'username': {'required': True},
-            'password': {'required': True},
-            'first_name': {'required': True},
-            'last_name': {'required': True},
-        }
