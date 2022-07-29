@@ -27,9 +27,6 @@ jobs:
     steps:
       - id: commit
         uses: pr-mpt/actions-commit-hash@v1
-        with:
-          commit: "${{ github.event.workflow_run.head_sha }}"
-          prefix: "sha-"
       - name: Check out the repo
         uses: actions/checkout@v2 
       - name: Set up Docker Buildx
