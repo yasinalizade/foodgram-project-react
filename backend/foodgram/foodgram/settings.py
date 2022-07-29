@@ -8,7 +8,7 @@ SECRET_KEY = force_str(os.environ.get("SECRET_KEY", default='123'))
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['84.201.143.39', '127.0.0.1', 'localhost', 'cuisuine.ddns.net']
+ALLOWED_HOSTS = ['84.201.143.39', '127.0.0.1', 'localhost', 'cuisine.ddns.net']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
