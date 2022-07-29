@@ -9,8 +9,7 @@ services:
       - ./.env
 
   backend:
-    build:
-      image: yasinalizade/foodgram-backend:latest
+    image: yasinalizade/foodgram-backend:latest
     restart: always
     volumes:
       - backend_static:/app/static/
