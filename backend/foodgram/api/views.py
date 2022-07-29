@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from recipes.models import Favorite, IngredientRecipe, Recipe, Shopping
+from recipes.models import Favorite, IngredientAmount, Recipe, Shopping
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -40,7 +40,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
         final_list = {}
-        ingredients = IngredientRecipe.objects.filter(
+        ingredients = IngredientAmount.objects.filter(
             recipe__shopping__user=request.user).values_list(
             'ingredient__name', 'ingredient__measurement_unit',
             'amount')

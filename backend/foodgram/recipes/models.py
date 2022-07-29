@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.constraints import UniqueConstraint
 from django.utils.translation import gettext_lazy as _
 from ingredients.models import Ingredient
 from users.models import User
@@ -43,7 +44,7 @@ class Recipe(models.Model):
         Ingredient,
         related_name='recipes',
         verbose_name=_('Ingredients'),
-        through='IngredientRecipe'
+        through='IngredientAmount'
     )
     tags = models.ManyToManyField(
         Tag,
@@ -105,21 +106,25 @@ class TagRecipe(models.Model):
     )
 
 
-class IngredientRecipe(models.Model):
+class IngredientAmount(models.Model):
     ingredient = models.ForeignKey(
         Ingredient,
         on_delete=models.CASCADE,
-        related_name='recipe_ingredient_list',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='ingredient_recipe_list',
     )
     amount = models.PositiveSmallIntegerField(
         _('Amount'),
         default=1,
     )
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=['ingredient', 'recipe'],
+                             name='unique ingredients in recipes')
+        ]
 
 
 class Shopping(models.Model):

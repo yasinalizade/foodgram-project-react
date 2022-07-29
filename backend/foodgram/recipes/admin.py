@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import IngredientRecipe, Recipe, Tag, TagRecipe
+from .models import IngredientAmount, Recipe, Tag, TagRecipe
 
 
 class TagsInline(admin.TabularInline):
@@ -9,7 +9,7 @@ class TagsInline(admin.TabularInline):
 
 
 class IngredientInline(admin.TabularInline):
-    model = IngredientRecipe
+    model = IngredientAmount
     extra = 1
 
 

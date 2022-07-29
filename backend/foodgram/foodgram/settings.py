@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = force_str(os.environ.get("SECRET_KEY", default='123'))
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -128,7 +128,6 @@ REST_FRAMEWORK = {
 DJOSER = {
     'LOGIN_FIELD': 'email',
     'HIDE_USERS': False,
-    'USER_ID_FIELD': 'id',
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
     'SEND_CONFIRMATION_EMAIL': False,

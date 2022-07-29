@@ -1,7 +1,7 @@
 from api.pagination import LimitPageNumberPagination
 from api.serializers import (CustomUserSerializer,
                              FoodgramUserCreateSerializer,
-                             SubscriptionSerializer)
+                             SetPasswordSerializer, SubscriptionSerializer)
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
@@ -21,6 +21,20 @@ class CustomUserViewSet(UserViewSet):
         elif self.action == 'create':
             return FoodgramUserCreateSerializer
         return CustomUserSerializer
+
+    @action(detail=False, methods=['post'],
+            permission_classes=[IsAuthenticated])
+    def set_password(self, request, *args, **kwargs):
+        user = request.user
+        serializer = SetPasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        if user.check_password(serializer.validated_data.get(
+                               'current_password')):
+            user.set_password(serializer.validated_data.get('new_password'))
+            user.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'current_password': 'Incorrect password!'},
+                        status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['post'],
             permission_classes=[IsAuthenticated])

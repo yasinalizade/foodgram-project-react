@@ -10,8 +10,7 @@ services:
 
   backend:
     build:
-      context: ../backend/foodgram/
-      dockerfile: Dockerfile
+      image: yasinalizade/foodgram-backend:latest
     restart: always
     volumes:
       - backend_static:/app/static/
