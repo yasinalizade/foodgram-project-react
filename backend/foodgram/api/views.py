@@ -54,7 +54,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             else:
                 final_list[name]['amount'] += item[2]
         pdfmetrics.registerFont(
-            TTFont('Xarrovv', './recipes/static/Xarrovv.ttf', 'UTF-8'))
+            TTFont('Xarrovv', './static/Xarrovv.ttf', 'UTF-8'))
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = ('attachment; '
                                            'filename="shopping_list.pdf"')
