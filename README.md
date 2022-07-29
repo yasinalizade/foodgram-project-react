@@ -1,5 +1,5 @@
 # Diplom project
-![example workflow](https://github.com/yasinalizade/foodgram-project-react/actions/workflows/yamdb_workflow.yml/badge.svg)
+![example workflow](https://github.com/yasinalizade/foodgram-project-react/actions/workflows/main.yml/badge.svg)
 
 
 This project is a web-site with cooking recipes. Frontend is based on React,
