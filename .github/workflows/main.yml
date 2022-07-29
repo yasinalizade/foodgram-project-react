@@ -22,10 +22,10 @@ jobs:
         python -m flake8
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
+    id: commit
     runs-on: ubuntu-latest
     needs: tests
     steps:
-      id: commit
       - name: Check out the repo
         uses: actions/checkout@v2 
       - name: Set up Docker Buildx
