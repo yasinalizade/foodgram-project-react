@@ -26,6 +26,7 @@ jobs:
     needs: tests
     steps:
       - name: Check out the repo
+        id: commit
         uses: actions/checkout@v2 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1 
